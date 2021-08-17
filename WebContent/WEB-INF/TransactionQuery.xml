@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- by Udara Samaratunge Department of Software Engineering OOP 
+	SQL queries -->
+<Querys>
+
+	<!-- Create table employee Query -->
+	<query id="create_transfer_table">
+        <![CDATA[
+             CREATE TABLE transfer(
+				transferID varchar(10),
+				accountNo varchar(20),
+				recipientAccountNo varchar(15),
+				amount float(15),
+				constraint pk_transaction primary key (transferID),
+                constraint fk_account foreign key (accountNo) references account(Account_number) on delete cascade,
+                constraint fk_recAccount foreign key (recipientAccountNo) references account(Account_number) on delete cascade                
+			);
+        ]]>
+	</query>
+
+	<!-- DROP TABLE EMPLOYEES Query -->
+	<query id="drop_transfer_table">
+         <![CDATA[        
+            DROP TABLE IF EXISTS transfer 
+        ]]>
+	</query>
+
+	<!-- Select all customer orders Query -->
+	<query id="insert_transfer">
+        <![CDATA[
+          	insert into transfer (transferID, accountNo, recipientAccountNo, amount) 
+          	values (?, ?, ?, ?)
+        ]]>
+	</query>
+
+	<!-- Select a particular employee by id Query -->
+	<query id="transfer_by_id">
+         <![CDATA[        
+            select * from transfer where transfer.transferID = ?
+        ]]>
+	</query>
+
+	<!-- Select all employees -->
+	<query id="all_transfers">
+         <![CDATA[        
+            select * from transfer where transfer.accountNo = ? 
+        ]]>
+	</query>
+
+	<!-- Delete a particular employee by id Query -->
+	<query id="delete_transfer">
+         <![CDATA[        
+            delete from transfer where transfer.transferID = ?
+        ]]>
+	</query>
+	
+	<!-- Update a particular employee by id Query -->
+	<query id="update_transfer">
+         <![CDATA[        
+            update transfer as t 
+            set t.accountNo = ?, t.recipientAccountNo = ?, t.amount = ? 
+            where t.transferID = ?
+        ]]>
+	</query>
+	
+		<!-- Get employee IDs Query -->
+	<query id="transfer_ids">
+         <![CDATA[        
+            select t.transferID from transfer as t
+        ]]>
+	</query>
+	<query id="create_request_table_transfer">
+		<![CDATA[
+			create table request(
+			transferID varchar (10),
+			constraint pk_request primary key (transferID),
+    		constraint fk_transaction foreign key (transferID) references transfer(transferID)
+    		on delete cascade
+			)
+		]]>
+	
+	</query>
+	<query id="insert_request_transfer">
+		<![CDATA[
+			insert into request (transferID) 
+          	values (?)
+		]]>
+	
+	</query>
+	<query id="get_all_delete_requests_transfer">
+         <![CDATA[        
+            select t.transferID, t.accountNo, t.recipientAccountNo, t.amount from transfer t, request r where t.transferID=r.transferID;
+        ]]>
+	</query>
+		<!-- Delete a particular employee by id Query -->
+	<query id="remove_request_transfer">
+         <![CDATA[        
+            delete from request where request.transferID = ?
+        ]]>
+    </query>
+    <query id="drop_table_request_transfer">
+         <![CDATA[        
+            DROP TABLE IF EXISTS request 
+        ]]>
+	</query>
+	<query id="login">
+		<![CDATA[
+			select * from login where username = ? and password = ?
+		]]>
+	</query>
+	
+	<!-- Sheran -->
+	
+	<!-- Create table account Query -->
+	<query id="create_account_table">
+        <![CDATA[
+            CREATE TABLE account(
+				Account_number varchar(10) not null,
+				Owner_name varchar(20),
+				Nic varchar(15),
+				Age varchar(15),
+				Gender varchar(15),
+				Acc_type  varchar(50),
+				Acc_balance varchar(20),
+				Password varchar(20),
+				primary key (Account_number,Password)
+			)
+        ]]>
+	</query>
+    <query id="create_login_table">
+        <![CDATA[
+           CREATE TABLE login (
+				username varchar(15),
+				password varchar(15),
+				PRIMARY KEY (username), 
+                constraint fk_login foreign key (username,password) references account(Account_number,Password) on delete cascade
+			)
+        ]]>
+	</query>
+	<!-- DROP TABLE Account Query -->
+	<query id="drop_account_table">
+         <![CDATA[        
+            DROP TABLE IF EXISTS account 
+        ]]>
+	</query>
+
+	<!-- Select all customer orders Query -->
+	<query id="insert_account">
+        <![CDATA[
+          	insert into account (Account_number, Owner_name, Nic, Age, Gender, Acc_type,Acc_balance,Password) 
+          	values (?, ?, ?, ?, ?, ?, ?, ?)
+        ]]>
+	</query>
+
+	<!-- Select a particular account by id Query -->
+	<query id="account_number_by_id">
+         <![CDATA[        
+            select * from account where account.Account_number = ?
+        ]]>
+	</query>
+
+	<!-- Select all accounts -->
+	<query id="all_accounts">
+         <![CDATA[        
+            select * from account
+        ]]>
+	</query>
+
+	<!-- Delete a particular account by id Query -->
+	<query id="remove_account">
+         <![CDATA[        
+            delete from account where account.Account_number = ?
+        ]]>
+	</query>
+	
+	<!-- Update a particular account by id Query -->
+	<query id="update_account">
+         <![CDATA[        
+            update account as a 
+            set a.Owner_name= ?, a.Nic = ?, a.Age = ?, a.Gender = ?, a.Acc_type = ?,a.Acc_balance = ?
+            where a.Account_number = ?
+        ]]>
+	</query>
+	
+		<!-- Get account number Query -->
+	<query id="account_numbers">
+         <![CDATA[        
+            select a.Account_number from account as a
+        ]]>
+	</query>
+	<query id="create_request_table_account">
+		<![CDATA[
+			create table request_account(
+			Account_number varchar (10),
+			constraint pk_request_account primary key (Account_number),
+    		constraint fk_request_account foreign key (Account_number) references account(Account_number)
+    		on delete cascade
+			)
+		]]>
+	
+	</query>
+
+<query id="insert_request_account">
+		<![CDATA[
+			insert into request_account (Account_number) 
+          	values (?)
+		]]>
+	
+	</query>
+	<query id="get_all_delete_requests_account">
+         <![CDATA[        
+            select * from account a , request_account r where r.Account_number=a.Account_number;
+        ]]>
+	</query>
+		<!-- Delete a particular employee by id Query -->
+	<query id="remove_request_account">
+         <![CDATA[        
+            delete from request_account where request_account.Account_number = ?
+        ]]>
+    </query>
+    <query id="drop_table_request_account">
+         <![CDATA[        
+            DROP TABLE IF EXISTS request_account 
+        ]]>
+	</query>
+	<query id="insert_login">
+		<![CDATA[
+			insert into login (username,Password) 
+          	values (?, ?)
+		]]>
+	</query>
+	
+	<!--  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Givindu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+	
+	<!-- Create table billpayment Query -->
+	<query id="create_billpayment_table">
+        <![CDATA[
+            CREATE TABLE billpayment(
+            	AccNum varchar(10) not null,
+				BillID varchar(10) not null,
+				Name varchar(20),
+				Amount float,
+				Bank varchar(15),
+				primary key (BillID),
+				constraint fk_billpayment foreign key (AccNum) references account(Account_number)				
+			)
+        ]]>
+	</query>
+
+	<!-- DROP TABLE billpayment Query -->
+	<query id="drop_table_billpayment">
+         <![CDATA[        
+            DROP TABLE IF EXISTS billpayment 
+        ]]>
+	</query>
+
+	<!-- Select all customer billpayments Query -->
+	<query id="insert_billpayment">
+        <![CDATA[
+          	insert into billpayment (AccNum, BillID, Name, Amount, Bank) 
+          	values (?, ?, ?, ?, ?)
+        ]]>
+	</query>
+
+	<!-- Select a particular billpayment by id Query -->
+	<query id="billpayment_by_id">
+         <![CDATA[        
+            select * from billpayment where billpayment.BillID = ?
+        ]]>
+	</query>
+
+	<!-- Select all billpayment -->
+	<query id="all_billpayment">
+         <![CDATA[        
+            select * from billpayment where billpayment.AccNum = ?
+        ]]>
+	</query>
+
+	<!-- Delete a particular billpayment by id Query -->
+	<query id="remove_billpayment">
+         <![CDATA[        
+            delete from billpayment where billpayment.BillID = ?
+        ]]>
+	</query>
+	
+	<!-- Update a particular billpayment by id Query -->
+	<query id="update_billpayment">
+         <![CDATA[        
+            update billpayment as b 
+            set b.AccNum = ?, b.Name = ?, b.Amount = ?, b.Bank = ?
+            where b.BillID = ?
+        ]]>
+	</query>
+	
+		<!-- Get billpayment IDs Query -->
+	<query id="billpayment_ids">
+         <![CDATA[        
+            select b.BillID from billpayment as b
+        ]]>
+	</query>
+	<query id="create_request_table_billpayment">
+		<![CDATA[
+			create table request_billpayment(
+			BillID varchar (10),
+			constraint pk_request primary key (BillID),
+    		constraint fk_billPayment_request foreign key (BillID) references billpayment(BillID)
+    		on delete cascade
+			)
+		]]>
+	
+	</query>
+
+<query id="insert_request_billpayment">
+		<![CDATA[
+			insert into request_billpayment (BillID) 
+          	values (?)
+		]]>
+	
+	</query>
+	<query id="get_all_delete_requests_billpayment">
+         <![CDATA[        
+            select * from billpayment b, request_billpayment r where b.BillID=r.BillID;
+        ]]>
+	</query>
+		<!-- Delete a particular bill payment by id Query -->
+	<query id="remove_request_billpayment">
+         <![CDATA[        
+            delete from request_billpayment where request.BillID = ?
+        ]]>
+    </query>
+    <query id="drop_table_request_billpayment">
+         <![CDATA[        
+            DROP TABLE IF EXISTS request_billpayment 
+        ]]>
+	</query>
+	<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!KASUN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+	<!-- Create table employee Query -->
+	<query id="createFixedDepositTable">
+        <![CDATA[
+            CREATE TABLE fixeddeposit(
+				depositID varchar(10) not null,
+				interest varchar(20),
+				duration varchar(15),
+				accountNum varchar(15),
+				amount varchar(15),
+				primary key (depositID),
+				constraint fk_account_fd foreign key (accountNum) references account(Account_number) on delete cascade
+			)
+        ]]>
+	</query>
+
+	<!-- DROP TABLE EMPLOYEES Query -->
+	<query id="drop_table_FD">
+         <![CDATA[        
+            DROP TABLE IF EXISTS fixeddeposit 
+        ]]>
+	</query>
+
+	<!-- Select all customer orders Query -->
+	<query id="insert_fixeddeposit">
+        <![CDATA[
+          	insert into fixeddeposit (depositID ,interest, duration, accountNum, amount) 
+          	values (?, ?, ?, ?, ?)
+        ]]>
+	</query>
+
+	<!-- Select a particular employee by id Query -->
+	<query id="fixeddeposit_by_id">
+         <![CDATA[        
+            select * from fixeddeposit where fixeddeposit.depositID = ?
+        ]]>
+	</query>
+
+	<!-- Select all employees -->
+	<query id="all_fixeddeposit">
+         <![CDATA[        
+            select * from fixeddeposit where fixeddeposit.accountNum = ?
+        ]]>
+	</query>
+
+	<!-- Delete a particular employee by id Query -->
+	<query id="remove_fixeddeposit">
+         <![CDATA[        
+            delete from fixeddeposit where fixeddeposit.depositID = ?
+        ]]>
+	</query>
+	
+	<!-- Update a particular employee by id Query -->
+	<query id="update_fixeddeposit">
+         <![CDATA[        
+            update fixeddeposit as f
+            set  f.interest = ?, f.duration = ?, f.accountNum = ?, f.amount = ?
+            where f.depositID = ?
+        ]]>
+	</query>
+	
+		<!-- Get employee IDs Query -->
+	<query id="fixeddeposit_ids">
+         <![CDATA[        
+            select f.depositID from fixeddeposit as f
+        ]]>
+	</query>
+	<query id="create_request_table_fd">
+		<![CDATA[
+			create table request_fd(
+			depositID varchar (10),
+			constraint pk_request_fd primary key (depositID),
+    		constraint fk_fixeddeposit_request foreign key (depositID) references fixeddeposit(depositID)
+    		on delete cascade
+			)
+		]]>
+	
+	</query>
+
+<query id="insert_request_fd">
+		<![CDATA[
+			insert into request_fd (depositID) 
+          	values (?)
+		]]>
+	
+	</query>
+	<query id="get_all_delete_requests_fd">
+         <![CDATA[        
+            select * from fixeddeposit f, request_fd r where f.depositID=r.depositID;
+        ]]>
+	</query>
+		<!-- Delete a particular bill payment by id Query -->
+	<query id="remove_request_fd">
+         <![CDATA[        
+            delete from request_fd where request_fd.depositID = ?
+        ]]>
+    </query>
+    <query id="drop_table_request_fd">
+         <![CDATA[        
+            DROP TABLE IF EXISTS request_fd
+        ]]>
+	</query>
+</Querys>
